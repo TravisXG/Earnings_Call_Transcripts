@@ -45,6 +45,14 @@ def extract_ticker_from_slug(slug):
     return "UNKNOWN"
 
 
+def extract_date_from_path(path):
+    # Expect path like: /earnings/call-transcripts/YYYY/MM/DD/slug/
+    match = re.search(r"/earnings/call-transcripts/(\d{4})/(\d{2})/(\d{2})/", path)
+    if not match:
+        return ""
+    return f"{match.group(1)}_{match.group(2)}_{match.group(3)}"
+
+
 def extract_title_and_body(html):
     soup = BeautifulSoup(html, "html.parser")
 
@@ -82,7 +90,7 @@ def extract_title_and_body(html):
     return title, body
 
 
-def normalize_filename(ticker, title):
+def normalize_filename(ticker, title, date_prefix):
     # Remove leading company name and optional ticker from title, if present
     # Example: "Amazon (AMZN) Q4 2025 Earnings Call Transcript" -> "Q4 2025 Earnings Call Transcript"
     cleaned = title
@@ -97,6 +105,8 @@ def normalize_filename(ticker, title):
     if not cleaned:
         cleaned = "Earnings_Call_Transcript"
 
+    if date_prefix:
+        return f"{ticker}_{date_prefix}_{cleaned}.md"
     return f"{ticker}_{cleaned}.md"
 
 
@@ -129,11 +139,12 @@ def main():
             parsed = urlparse(url)
             slug = Path(parsed.path).name or Path(parsed.path).parent.name
             ticker = extract_ticker_from_slug(slug)
+            date_prefix = extract_date_from_path(parsed.path)
 
             html = fetch(url)
             title, body = extract_title_and_body(html)
 
-            filename = normalize_filename(ticker, title)
+            filename = normalize_filename(ticker, title, date_prefix)
             stem = Path(filename).stem
             md_path = outdir / f"{stem}.md"
             txt_path = outdir / f"{stem}.txt"

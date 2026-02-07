@@ -1,13 +1,13 @@
-# Earnings Call Transcripts Downloader (Version 1)
+# Earnings Call Transcripts Downloader (Version 1.1)
 
 This tool downloads Motley Fool earnings call transcript pages from a list of URLs and saves the content as `.md` and `.txt` files.
 
-## Version 1 Scope
+## Version 1.1 Scope
 
-Version 1 focuses on:
+Version 1.1 focuses on:
 - Input: explicit URLs (args or a URL list file)
 - Output: `.md` and `.txt`
-- Filenames: `TICKER_<TitleCore>.md/.txt`, whitespace removed and non-alphanumeric characters stripped
+- Filenames: `TICKER_YYYY_MM_DD_<TitleCore>.md/.txt`, whitespace removed and non-alphanumeric characters stripped
 - Polite crawling: one request per second by default
 
 ## How It Works (Architecture)
@@ -21,6 +21,7 @@ Version 1 focuses on:
    - Extracts body from `article` (fallback to `main`, then `body`) and keeps paragraph text.
 4. **Normalize layer**
    - Derives ticker from URL slug.
+   - Extracts date from URL path (`YYYY/MM/DD` → `YYYY_MM_DD`).
    - Builds a filename by stripping company name/ticker from the title and normalizing to underscores.
 5. **Output layer**
    - Writes `.md` and `.txt` with title, source URL, and body.
@@ -53,7 +54,7 @@ python3 /Users/x/X_Github_Repos/Earnings_Call_Transcripts/download_transcripts.p
 - `--delay` Seconds to wait between requests (default: `1.0`)
 - `--overwrite` Overwrite existing files
 
-## Maintenance Goal (Version 1)
+## Maintenance Goal (Version 1.1)
 
 - Keep the script stable and predictable.
 - Keep dependencies minimal.
