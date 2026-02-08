@@ -31,21 +31,21 @@ Version 1.1 focuses on:
 Install dependencies:
 
 ```bash
-python3 -m pip install -r /Users/x/X_Github_Repos/Earnings_Call_Transcripts/requirements.txt
+python3 -m pip install -r ./requirements.txt
 ```
 
 ### Option A: Pass URLs directly
 
 ```bash
-python3 /Users/x/X_Github_Repos/Earnings_Call_Transcripts/download_transcripts.py \
+python3 ./download_transcripts.py \
   https://www.fool.com/earnings/call-transcripts/2026/02/05/amazon-amzn-q4-2025-earnings-call-transcript/
 ```
 
 ### Option B: Use a URL list file
 
 ```bash
-python3 /Users/x/X_Github_Repos/Earnings_Call_Transcripts/download_transcripts.py \
-  --file /Users/x/X_Github_Repos/Earnings_Call_Transcripts/fool_com.txt
+python3 ./download_transcripts.py \
+  --file ./fool_com.txt
 ```
 
 ### Options
@@ -61,9 +61,10 @@ python3 /Users/x/X_Github_Repos/Earnings_Call_Transcripts/download_transcripts.p
 - Avoid system-level installs.
 - Any feature additions should preserve the V1 behavior by keeping `download_transcripts_v1.py` unchanged.
 
-## V1 Backup
+## Backups
 
 - `download_transcripts_v1.py` is a frozen copy of the V1 logic for rollback.
+- `download_transcripts_v1_1.py` is a frozen copy of the V1.1 logic for rollback.
 
 ## Notes
 
